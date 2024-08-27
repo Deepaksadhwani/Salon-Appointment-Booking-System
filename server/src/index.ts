@@ -9,6 +9,7 @@ const app = express();
 app.use(
   cors({
     origin: "*",
+    exposedHeaders: ["authorization"],
   })
 );
 app.use(express.json());

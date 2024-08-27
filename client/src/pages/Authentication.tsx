@@ -6,11 +6,16 @@ import axios from "axios";
 import { SERVER_URL } from "@/utils/constants";
 import Lottie from "lottie-react";
 import { z } from "zod";
-
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/appStore";
+import { useNavigate } from "react-router-dom";
+import { addToken } from "@/store/slices/userSlice";
+import Shimmer from "@/components/Shimmer";
 
 const Authentication = () => {
   type FormInputTypes = z.infer<typeof authValidationSchema>;
-
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const name = useRef<HTMLInputElement>(null);
   const email = useRef<HTMLInputElement>(null);
@@ -30,7 +35,7 @@ const Authentication = () => {
       email: email.current?.value || "",
       password: password.current?.value || "",
     };
-    console.log(data)
+    console.log(data);
     const parsed = authValidationSchema.safeParse(data);
     if (!parsed.success) {
       return setError("Password must contain at least 8 words.");
@@ -43,7 +48,8 @@ const Authentication = () => {
       const token = response.headers["authorization"]?.split(" ")[1];
       localStorage.setItem("token", token);
       localStorage.setItem("userData", JSON.stringify(response.data.data));
-      console.log(response)
+      navigate("/");
+      console.log(response);
     } catch (error: any) {
       console.log(error.response);
       setError(error.response.data.Message);
@@ -61,19 +67,22 @@ const Authentication = () => {
   };
 
   useEffect(() => {
-    // const userToken = localStorage.getItem("token");
-    // if (userToken) {
-    //   dispatch(addToken(userToken));
-    //   navigate("/");
-    // }
+    const userToken = localStorage.getItem("token");
+
+    if (userToken) {
+      dispatch(addToken(userToken));
+      navigate("/");
+    }
   }, []);
 
-  return (
+  return isLoading ? (
+    <Shimmer />
+  ) : (
     <section className="bg-gradient-to-bl from-gray-400 via-white to-gray-400">
-      <div className="fixed  right-60 w-60 drop-shadow-lg">
+      <div className="fixed right-60 hidden w-60 drop-shadow-lg xl:block">
         <Lottie animationData={combAnimation} />
       </div>
-      <div className="fixed xl:block hidden bottom-20 left-80 w-60 drop-shadow-lg">
+      <div className="fixed bottom-20 left-80 hidden w-60 drop-shadow-lg xl:block">
         <Lottie animationData={scissorAnimation} />
       </div>
 
@@ -94,7 +103,7 @@ const Authentication = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white md:text-2xl">
               {isSign ? "Sign in" : "Sign up"} to your account
             </h1>
-            <div className="space-y-4 md:space-y-6" >
+            <div className="space-y-4 md:space-y-6">
               <div>
                 {!isSign && (
                   <div>
@@ -156,7 +165,6 @@ const Authentication = () => {
                       aria-describedby="remember"
                       type="checkbox"
                       className="focus:ring-3 focus:ring-primary-300 dark:focus:ring-primary-600 h-4 w-4 rounded border border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800"
-                      
                     />
                   </div>
                   <div className="ml-3 text-sm">

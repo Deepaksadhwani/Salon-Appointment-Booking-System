@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 export async function insertUser(
   email: string,
   fullName: string,
-  password: string,
+  password: string
 ) {
   const res = await prisma.user.create({
     data: {
@@ -26,3 +26,5 @@ export const getUser = async (email: string) => {
   });
   return res;
 };
+
+

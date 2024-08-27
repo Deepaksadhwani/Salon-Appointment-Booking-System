@@ -1,4 +1,4 @@
-import {  getUser, insertUser } from "../services/userService";
+import { getUser, insertUser } from "../services/userService";
 import {
   generateToken,
   hashPassword,
@@ -21,8 +21,8 @@ export const signupController = async (req: any, res: any) => {
     let { fullName, password, email } = parsed.data;
     password = await hashPassword(password, 10);
 
-    const userData = await insertUser(email, fullName,  password);
-    console.log(fullName)
+    const userData = await insertUser(email, fullName, password);
+    console.log(fullName);
     const token = generateToken(userData.id);
     res.setHeader("authorization", `bearer ${token}`);
     res.status(201).json({
@@ -53,7 +53,11 @@ export const signinController = async (req: any, res: any) => {
         res.setHeader("authorization", `bearer ${token}`);
         res.status(200).json({
           Message: "Logged In successfully",
-          data: { name: response.fullName, email: response.email },
+          data: {
+            name: response.fullName,
+            email: response.email,
+            photoUrl: response.photoUrl,
+          },
         });
       } else {
         res.status(404).json({ Message: "Invalid password entered." });

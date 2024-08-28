@@ -14,8 +14,6 @@ app.use(
 );
 app.use(express.json());
 
-
-
 app.get("/", (req, res) => {
   try {
     res.status(200).send("Server is working");
@@ -25,5 +23,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/v1", rootRouter);
 app.listen(process.env.PORT, () => {
-  console.log(`server is running on port ${process.env.PORT}`);
+  console.log(
+    `server is running on port ${process.env.PORT}`
+  );
 });

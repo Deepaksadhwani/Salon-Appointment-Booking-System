@@ -13,9 +13,11 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [displayName, setDisplayName] = useState<string>("Profile");
   let userImage = profileImage;
+  let adminStatus;
   const userData: any = useSelector((store: RootState) => store.user.userData);
   if (userData) {
     if (userData[0].photoUrl) userImage = userData[0].photoUrl;
+    if(userData[0].role) adminStatus = userData[0].role
   }
   const activeClass = "text-yellow-400";
 
@@ -33,6 +35,7 @@ const Navbar = () => {
   };
 useEffect(() => {
   dispatch(getUser());
+ 
 }, [dispatch]);
 
 useEffect(() => {
@@ -40,8 +43,8 @@ useEffect(() => {
     setDisplayName(userData[0]?.fullName || "Profile");
   }
 }, [userData]);
-  console.log(displayName)
 
+console.log(adminStatus)
   return loading ? (
     <div>Loading....</div>
   ) : (
@@ -53,13 +56,7 @@ useEffect(() => {
           alt=""
           className="hidden w-20 cursor-pointer rounded-full shadow-md shadow-cyan-200 transition-all duration-100 lg:block"
         />
-         <NavLink
-          to="/admin"
-          className="text-lime-400 text-2xl font-semibold"
-          onClick={() => setIsOpen(false)}
-        >
-          admin
-        </NavLink>
+       
       </div>
       <div>
         <h1 className="block text-4xl font-semibold italic tracking-tight text-yellow-500 transition-all duration-1000 sm:block">
@@ -75,6 +72,14 @@ useEffect(() => {
         >
           Home
         </NavLink>
+      {adminStatus == "admin" &&  <NavLink
+          to="/admin"
+          className={({ isActive }) => (isActive ? activeClass : undefined)}
+
+          onClick={() => setIsOpen(false)}
+        >
+          admin
+        </NavLink>}
         <NavLink
           to="/staff-members"
           className={({ isActive }) => (isActive ? activeClass : undefined)}

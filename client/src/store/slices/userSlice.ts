@@ -34,7 +34,7 @@ export const getUser = createAsyncThunk("getUser", async () => {
     `${SERVER_URL}/profile/get-user`,
     HEADERDATA,
   );
-  console.log(response);
+  console.log("getUser",response);
   return response.data.data;
 });
 

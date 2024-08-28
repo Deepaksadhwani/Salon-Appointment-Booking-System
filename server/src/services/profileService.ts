@@ -6,12 +6,19 @@ const prisma = new PrismaClient();
 export const updateUserProfile = async (
   id: number,
   fullName: string,
-  photoUrl: string
+  photoUrl?: string,
+  role?: string
 ) => {
-  const data: { fullName: string; photoUrl?: string } = { fullName };
+  const data: { fullName: string; photoUrl?: string; role?: string } = {
+    fullName,
+  };
 
-  if (photoUrl && photoUrl !== "") {
+  if (photoUrl) {
     data.photoUrl = photoUrl;
+  }
+
+  if (role) {
+    data.role = role;
   }
 
   const res = await prisma.user.update({
@@ -34,6 +41,7 @@ export const getUserProfileData = async (id: number) => {
     select: {
       fullName: true,
       photoUrl: true,
+      role: true
     },
   });
   return res;

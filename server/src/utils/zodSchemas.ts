@@ -13,7 +13,8 @@ export const signinSchema = z.object({
 
 export const updateUserSchema = z.object({
   fullName: z.string().min(1),
-  photoUrl: z.string(),
+  photoUrl: z.string().optional(),
+  role: z.string().optional()
 });
 
 export const servicesSchema = z.object({

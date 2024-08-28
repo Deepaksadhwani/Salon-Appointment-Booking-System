@@ -139,7 +139,7 @@ const Service = () => {
                       {relatedService.description.slice(0, 60)}...
                     </p>
                     <p className="mt-4 text-lg font-bold text-indigo-600">
-                      ₹{relatedService.price.toFixed(2)}
+                      ${relatedService.price.toFixed(2)}
                     </p>
                     <Link to={`/services/${relatedService.id}`}>
                       <button className="mt-4 w-full transform rounded-lg bg-indigo-600 px-4 py-2 font-bold text-white shadow-md transition hover:scale-105 hover:bg-indigo-700">

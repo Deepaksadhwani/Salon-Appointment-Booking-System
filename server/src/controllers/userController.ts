@@ -57,6 +57,7 @@ export const signinController = async (req: any, res: any) => {
             name: response.fullName,
             email: response.email,
             photoUrl: response.photoUrl,
+            role: response.role,
           },
         });
       } else {

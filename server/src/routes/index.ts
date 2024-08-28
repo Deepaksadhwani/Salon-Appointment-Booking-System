@@ -8,4 +8,4 @@ export const rootRouter = express.Router();
 
 rootRouter.use("/user", userRouter);
 rootRouter.use("/profile", authenticateToken, profileRouter);
-rootRouter.use("/service", authenticateToken, serviceRouter);
+rootRouter.use("/service", serviceRouter);

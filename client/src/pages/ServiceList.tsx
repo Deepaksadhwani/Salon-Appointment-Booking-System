@@ -1,6 +1,9 @@
+import { AppDispatch } from "@/store/appStore";
+import { getUser } from "@/store/slices/userSlice";
 import { HEADERDATA, SERVER_URL } from "@/utils/constants";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 export type ServicesListTypes = {
@@ -13,14 +16,17 @@ export type ServicesListTypes = {
 }
 const ServiceListPage = () => {
   const [serviceList, setServiceList] = useState<ServicesListTypes[]>();
-
+  const dispatch = useDispatch<AppDispatch>()
+  useEffect(() => {
+    dispatch(getUser());
+   
+  }, [dispatch]);
   useEffect(() => {
     const fetchServices = async () => {
       const {
         data: { data },
       } = await axios.get(`${SERVER_URL}/service/get-services`, HEADERDATA);
       setServiceList(data);
-      console.log(data)
       
     };
     fetchServices();
@@ -54,7 +60,7 @@ const ServiceListPage = () => {
                 mins
               </div>
               <div className="mb-4 text-xl font-bold text-purple-600">
-                ₹{service.price.toFixed(2)}
+                ${service.price.toFixed(2)}
               </div>
               <Link
                 to={`/services/${service.id}`}

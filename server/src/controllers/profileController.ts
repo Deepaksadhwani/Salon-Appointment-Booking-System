@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 /*---------------------------Updating User Profile------------------------*/
 
 import {
@@ -7,17 +9,26 @@ import {
 import { updateUserSchema } from "../utils/zodSchemas";
 
 export const updateUserProfileController = async (req: any, res: any) => {
-  console.log("before parsed", req.body);
   const parsed = updateUserSchema.safeParse(req.body);
   if (!parsed.success) {
     return res
       .status(404)
       .json({ Message: "Input is missing.", data: parsed.error });
   }
+
   const id = req.userId;
-  const { fullName, photoUrl } = parsed.data;
+  const { fullName, photoUrl, role } = parsed.data;
+  let updateRole = role;
+  if (role == process.env.ADMIN_SECRECT_KEY) {
+    updateRole = "admin";
+  }
   try {
-    const response = await updateUserProfile(id, fullName, photoUrl);
+    const response = await updateUserProfile(
+      id,
+      fullName,
+      photoUrl,
+      updateRole
+    );
     res.status(201).json({
       Message: "Your profile detail has been updated.",
       data: { fullName: response.fullName, photoUrl: response.photoUrl },

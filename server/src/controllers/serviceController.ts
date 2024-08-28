@@ -32,7 +32,7 @@ export const insertServicesController = async (req: any, res: any) => {
 export const fetchServicesController = async (req: any, res: any) => {
   try {
     const response = await fetchServices();
-    console.log(response)
+   
     if (response) {
       res.status(200).json({
         Message: " Services list has been successfully fetched.",

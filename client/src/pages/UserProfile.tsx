@@ -6,7 +6,8 @@ import { updateUserProfile } from "@/store/slices/userSlice";
 
 const UserProfile = () => {
   const [displayName, setDisplayName] = useState<string>("");
-  const photoUrl = useRef<any>(null);
+  const adminKey = useRef<HTMLInputElement>(null)
+  const photoUrl = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch<AppDispatch>();
   const [error, setError] = useState<string>("");
   let userImage = profileImage;
@@ -23,8 +24,10 @@ const UserProfile = () => {
     setError("");
     const data: any = {
       fullName: displayName,
-      photoUrl: photoUrl.current.value,
+      role: adminKey.current?.value,
+      photoUrl: photoUrl.current?.value,
     };
+    console.log(data)
     try {
       dispatch(updateUserProfile(data));
       localStorage.setItem("userData", JSON.stringify({ name: displayName }));
@@ -44,7 +47,6 @@ const UserProfile = () => {
       }
     }
   }, []);
-  console.log(displayName);
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 p-4">
       <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-xl">
@@ -61,6 +63,30 @@ const UserProfile = () => {
 
           {/* Username Section */}
           <div className="mt-6 w-full">
+          <label
+              htmlFor="username"
+              className="mb-2 block font-semibold text-gray-700"
+            >
+              Username
+            </label>
+            <input
+              onChange={displayNameHandler}
+              type="text"
+              value={displayName}
+              className="w-full rounded-lg mb-2 border px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
+          <label
+              htmlFor="password"
+              className="mb-2 block font-semibold text-gray-700"
+            >
+           administer Key
+            </label>
+            <input
+              ref={adminKey}
+              type="password"
+              placeholder="Enter your admin key"
+              className="w-full rounded-lg border px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+            />
             <label
               htmlFor="username"
               className="mb-2 block font-semibold text-gray-700"
@@ -73,18 +99,7 @@ const UserProfile = () => {
               placeholder="Enter your photo url"
               className="w-full rounded-lg border px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
-            <label
-              htmlFor="username"
-              className="mb-2 block font-semibold text-gray-700"
-            >
-              Username
-            </label>
-            <input
-              onChange={displayNameHandler}
-              type="text"
-              value={displayName}
-              className="w-full rounded-lg border px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
-            />
+        
           </div>
 
           {/* Save Button */}

@@ -1,4 +1,4 @@
-import { insertServices } from "../services/workServices";
+import { fetchServices, insertServices } from "../services/workServices";
 import { servicesSchema } from "../utils/zodSchemas";
 
 export const insertServicesController = async (req: any, res: any) => {
@@ -17,7 +17,7 @@ export const insertServicesController = async (req: any, res: any) => {
       price,
       imageUrl
     );
-    console.log(response)
+    console.log(response);
     if (response) {
       res.status(201).json({ Message: "Service has successfully Added." });
     } else {
@@ -25,5 +25,23 @@ export const insertServicesController = async (req: any, res: any) => {
     }
   } catch (error) {
     res.status(500).status("Internal server error.");
+  }
+};
+
+/*----------------fetch services controller----------------------*/
+export const fetchServicesController = async (req: any, res: any) => {
+  try {
+    const response = await fetchServices();
+    console.log(response)
+    if (response) {
+      res.status(200).json({
+        Message: " Services list has been successfully fetched.",
+        data: response,
+      });
+    } else {
+      res.status(500).json({ Message: "Data is unable to retrieved." });
+    }
+  } catch (error) {
+    res.status(500).json({ Message: "Internal server found." });
   }
 };

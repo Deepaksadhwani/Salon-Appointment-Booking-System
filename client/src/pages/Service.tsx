@@ -1,17 +1,30 @@
-import { SERVICES } from "@/utils/ServicesListData";
-import React, { useEffect, useState } from "react";
+import { HEADERDATA, SERVER_URL } from "@/utils/constants";
+import axios from "axios";
+import  { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 const Service = () => {
   const { serviceId }: any = useParams();
   const [serviceData, setServiceData] = useState<any>(null);
+  const [SERVICES, setServices] = useState<any>(null);
 
   useEffect(() => {
-    const selectedService = SERVICES.find(
-      (service) => service.id === parseInt(serviceId),
-    );
-    setServiceData(selectedService);
-  }, [serviceId]);
+    const fetchServices = async () => {
+      const {
+        data: { data },
+      } = await axios.get(`${SERVER_URL}/service/get-services`, HEADERDATA);
+      setServices(data)
+    };
+    fetchServices();
+
+    if(SERVICES) {
+      const selectedService = SERVICES.find(
+        (service:any) => service.id === parseInt(serviceId),
+      );
+      setServiceData(selectedService);
+    }
+   
+  }, [serviceId,SERVICES]);
 
   if (!serviceData) {
     return (
@@ -106,9 +119,9 @@ const Service = () => {
             Related Services
           </h2>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {SERVICES.filter((service) => service.id !== parseInt(serviceId))
+            {SERVICES.filter((service:any) => service.id !== parseInt(serviceId))
               .slice(0, 3)
-              .map((relatedService) => (
+              .map((relatedService:any) => (
                 <div
                   key={relatedService.id}
                   className="overflow-hidden rounded-lg bg-white shadow-lg"
@@ -126,7 +139,7 @@ const Service = () => {
                       {relatedService.description.slice(0, 60)}...
                     </p>
                     <p className="mt-4 text-lg font-bold text-indigo-600">
-                    ₹{relatedService.price.toFixed(2)}
+                      ₹{relatedService.price.toFixed(2)}
                     </p>
                     <Link to={`/services/${relatedService.id}`}>
                       <button className="mt-4 w-full transform rounded-lg bg-indigo-600 px-4 py-2 font-bold text-white shadow-md transition hover:scale-105 hover:bg-indigo-700">

@@ -21,4 +21,9 @@ export const insertServices = async (
   return res;
 };
 
+/*----------------------fetch services------------------- */
 
+export const fetchServices = async () => {
+  const res = await prisma.services.findMany();
+  return res;
+};

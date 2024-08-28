@@ -1,9 +1,29 @@
-import { SERVICES } from "@/utils/ServicesListData";
-import { useState } from "react";
+import { HEADERDATA, SERVER_URL } from "@/utils/constants";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
+export type ServicesListTypes = {
+  id? : string | number, 
+  name: string;
+  description: string;
+  duration: number;
+  price: number;
+  photoUrl: number;
+}
 const ServiceListPage = () => {
-  const [serviceList] = useState(SERVICES);
+  const [serviceList, setServiceList] = useState<ServicesListTypes[]>();
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      const {
+        data: { data },
+      } = await axios.get(`${SERVER_URL}/service/get-services`, HEADERDATA);
+      setServiceList(data);
+      
+    };
+    fetchServices();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 px-4 py-12 sm:px-6 lg:px-8">

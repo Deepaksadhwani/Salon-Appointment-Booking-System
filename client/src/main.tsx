@@ -11,6 +11,8 @@ import UserProfile from "./pages/UserProfile.tsx";
 import ServiceListPage from "./pages/ServiceList.tsx";
 import Service from "./pages/Service.tsx";
 import AddSalonService from "./pages/AddSalonService.tsx";
+import SalonStaff from "./pages/StaffMembers.tsx";
+import AdminDashboard from "./pages/adminDashboard.tsx";
 ;
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -19,11 +21,12 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}>
-          <Route index element={<Home />} />
           <Route path="/profile" element={<UserProfile />} />
-          <Route path="/services" element={<ServiceListPage />} />
+          <Route index element={<ServiceListPage />} />
           <Route path="/services/:serviceId" element={<Service />} />
           <Route path="/add-services" element={<AddSalonService />} />
+          <Route path="/staff-members" element={<SalonStaff />} />
+          <Route path="/admin" element={<AdminDashboard />} />
           
         </Route>
         <Route path="/authentication" element={<Authentication />} />

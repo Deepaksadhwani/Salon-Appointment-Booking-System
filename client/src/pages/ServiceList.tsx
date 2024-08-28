@@ -20,6 +20,7 @@ const ServiceListPage = () => {
         data: { data },
       } = await axios.get(`${SERVER_URL}/service/get-services`, HEADERDATA);
       setServiceList(data);
+      console.log(data)
       
     };
     fetchServices();

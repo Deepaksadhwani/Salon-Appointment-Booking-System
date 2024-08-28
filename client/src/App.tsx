@@ -1,5 +1,4 @@
-import { Button } from "./components/ui/button";
-import Authentication from "./pages/Authentication";
+
 import { useSelector } from "react-redux";
 import { RootState } from "./store/appStore";
 import { Navigate, Outlet } from "react-router-dom";

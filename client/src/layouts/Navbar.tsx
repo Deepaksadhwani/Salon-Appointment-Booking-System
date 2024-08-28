@@ -53,6 +53,13 @@ useEffect(() => {
           alt=""
           className="hidden w-20 cursor-pointer rounded-full shadow-md shadow-cyan-200 transition-all duration-100 lg:block"
         />
+         <NavLink
+          to="/admin"
+          className="text-lime-400 text-2xl font-semibold"
+          onClick={() => setIsOpen(false)}
+        >
+          admin
+        </NavLink>
       </div>
       <div>
         <h1 className="block text-4xl font-semibold italic tracking-tight text-yellow-500 transition-all duration-1000 sm:block">
@@ -60,6 +67,7 @@ useEffect(() => {
         </h1>
       </div>
       <div className="flex items-center space-x-3 text-xl font-semibold text-white">
+       
         <NavLink
           to="/"
           className={({ isActive }) => (isActive ? activeClass : undefined)}
@@ -68,11 +76,11 @@ useEffect(() => {
           Home
         </NavLink>
         <NavLink
-          to="/services"
+          to="/staff-members"
           className={({ isActive }) => (isActive ? activeClass : undefined)}
           onClick={() => setIsOpen(false)}
         >
-          Services
+          Staffs
         </NavLink>
         <NavLink
           to="/add-services"

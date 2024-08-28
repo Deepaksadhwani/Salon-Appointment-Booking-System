@@ -74,6 +74,13 @@ useEffect(() => {
         >
           Services
         </NavLink>
+        <NavLink
+          to="/add-services"
+          className={({ isActive }) => (isActive ? activeClass : undefined)}
+          onClick={() => setIsOpen(false)}
+        >
+          +
+        </NavLink>
         <div
           onClick={() => setIsOpen((prev) => !prev)}
           className="group/testing hidden cursor-pointer select-none items-center space-x-3 rounded-md border-2 border-black bg-yellow-300 px-3 py-3 font-semibold text-[#000000] transition-all duration-200 hover:scale-[1.04] sm:flex"

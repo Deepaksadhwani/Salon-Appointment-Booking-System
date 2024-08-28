@@ -10,6 +10,7 @@ import Home from "./pages/Home.tsx";
 import UserProfile from "./pages/UserProfile.tsx";
 import ServiceListPage from "./pages/ServiceList.tsx";
 import Service from "./pages/Service.tsx";
+import AddSalonService from "./pages/AddSalonService.tsx";
 ;
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/services" element={<ServiceListPage />} />
           <Route path="/services/:serviceId" element={<Service />} />
+          <Route path="/add-services" element={<AddSalonService />} />
           
         </Route>
         <Route path="/authentication" element={<Authentication />} />

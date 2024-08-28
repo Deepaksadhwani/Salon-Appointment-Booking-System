@@ -15,3 +15,11 @@ export const updateUserSchema = z.object({
   fullName: z.string().min(1),
   photoUrl: z.string(),
 });
+
+export const servicesSchema = z.object({
+  name: z.string(),
+  description: z.string(),
+  duration: z.number(),
+  price: z.number(),
+  imageUrl: z.string(),
+});

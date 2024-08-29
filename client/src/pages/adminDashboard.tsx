@@ -19,7 +19,7 @@ const AdminDashboard = () => {
             <ul>
               <li className="mb-4">
                 <button
-                  onClick={() => navigate('/add-service')}
+                  onClick={() => navigate('/add-services')}
                   className="w-full text-left text-purple-600 font-semibold hover:text-purple-800"
                 >
                   Add Service

@@ -3,65 +3,66 @@ import {
   PlusCircle,
   X,
   Camera,
-  Clock,
-  DollarSign,
-  Type,
-  AlignLeft,
+  Mail,
+  User,
+  Briefcase,
+  Calendar
 } from "lucide-react";
 import axios from "axios";
 import { HEADERDATA, SERVER_URL } from "@/utils/constants";
 import toast from "react-hot-toast";
 
-interface SalonService {
-  name: string;
-  description: string;
-  duration: number;
-  price: number;
-  imageUrl: string;
+interface StaffMember {
+  fullName: string;
+  email: string;
+  photoUrl: string;
+  specialization: string;
+  availability: string;
 }
 
-const AddSalonService: React.FC = () => {
-  const nameRef = useRef<HTMLInputElement>(null);
-  const descriptionRef = useRef<HTMLTextAreaElement>(null);
-  const durationRef = useRef<HTMLInputElement>(null);
-  const priceRef = useRef<HTMLInputElement>(null);
-  const imageUrlRef = useRef<HTMLInputElement>(null);
+const AddSalonStaff: React.FC = () => {
+  const fullNameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const specializationRef = useRef<HTMLInputElement>(null);
+  const availabilityRef = useRef<HTMLInputElement>(null);
+  const photoUrlRef = useRef<HTMLInputElement>(null);
   const [previewImage, setPreviewImage] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    const newService: SalonService = {
-      name: nameRef.current?.value || "",
-      description: descriptionRef.current?.value || "",
-      duration: Number(durationRef.current?.value) || 0,
-      price: Number(priceRef.current?.value) || 0,
-      imageUrl: imageUrlRef.current?.value || "",
+    const newStaff: StaffMember = {
+      fullName: fullNameRef.current?.value || "",
+      email: emailRef.current?.value || "",
+      specialization: specializationRef.current?.value || "",
+      availability: availabilityRef.current?.value || "",
+      photoUrl: photoUrlRef.current?.value || "",
     };
     try {
       const response = await axios.post(
-        `${SERVER_URL}/service/add-service`,
-        newService,
-        HEADERDATA,
+        `${SERVER_URL}/staff/add-staff`,
+        newStaff,
+        HEADERDATA
       );
-      toast.success("Service has been successfully added. 🦋")
+      toast.success("Staff member has been successfully added. 🎉")
       console.log(response);
-      if (nameRef.current) nameRef.current.value = "";
-      if (descriptionRef.current) descriptionRef.current.value = "";
-      if (durationRef.current) durationRef.current.value = "";
-      if (priceRef.current) priceRef.current.value = "";
-      if (imageUrlRef.current) imageUrlRef.current.value = "";
+      if (fullNameRef.current) fullNameRef.current.value = "";
+      if (emailRef.current) emailRef.current.value = "";
+      if (specializationRef.current) specializationRef.current.value = "";
+      if (availabilityRef.current) availabilityRef.current.value = "";
+      if (photoUrlRef.current) photoUrlRef.current.value = "";
       setPreviewImage("");
     } catch (error) {
       console.log(error);
+      toast.error("Failed to add staff member. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const handleImagePreview = () => {
-    setPreviewImage(imageUrlRef.current?.value || "");
+    setPreviewImage(photoUrlRef.current?.value || "");
   };
 
   return (
@@ -70,71 +71,69 @@ const AddSalonService: React.FC = () => {
         <div className="md:flex">
           <div className="w-full p-8">
             <div className="mb-1 text-sm font-extrabold uppercase tracking-wide text-pink-600">
-              Add New Service
+              Add New Staff Member
             </div>
             <h2 className="mt-1 block text-2xl font-extrabold leading-tight text-gray-900">
-              Elevate Your Salon Experience
+              Expand Your Salon Team
             </h2>
             <form onSubmit={handleSubmit} className="mt-6 space-y-6">
               <div className="relative">
-                <Type className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                 <input
-                  ref={nameRef}
+                  ref={fullNameRef}
                   type="text"
-                  name="name"
-                  id="name"
+                  name="fullName"
+                  id="fullName"
                   required
                   className="w-full border-b-2 border-gray-300 py-2 pl-10 pr-3 text-gray-900 transition-colors duration-300 focus:border-pink-500 focus:outline-none"
-                  placeholder="Service Name"
+                  placeholder="Full Name"
                 />
               </div>
               <div className="relative">
-                <AlignLeft className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                <textarea
-                  ref={descriptionRef}
-                  name="description"
-                  id="description"
-                  rows={3}
+                <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                <input
+                  ref={emailRef}
+                  type="email"
+                  name="email"
+                  id="email"
+                  required
                   className="w-full border-b-2 border-gray-300 py-2 pl-10 pr-3 text-gray-900 transition-colors duration-300 focus:border-pink-500 focus:outline-none"
-                  placeholder="Describe the service..."
-                ></textarea>
+                  placeholder="Email Address"
+                />
               </div>
-              <div className="flex space-x-4">
-                <div className="relative flex-1">
-                  <Clock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                  <input
-                    ref={durationRef}
-                    type="number"
-                    name="duration"
-                    id="duration"
-                    required
-                    className="w-full border-b-2 border-gray-300 py-2 pl-10 pr-3 text-gray-900 transition-colors duration-300 focus:border-pink-500 focus:outline-none"
-                    placeholder="Duration (min)"
-                  />
-                </div>
-                <div className="relative flex-1">
-                  <DollarSign className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                  <input
-                    ref={priceRef}
-                    type="number"
-                    name="price"
-                    id="price"
-                    step="0.01"
-                    required
-                    className="w-full border-b-2 border-gray-300 py-2 pl-10 pr-3 text-gray-900 transition-colors duration-300 focus:border-pink-500 focus:outline-none"
-                    placeholder="Price ($)"
-                  />
-                </div>
+              <div className="relative">
+                <Briefcase className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                <input
+                  ref={specializationRef}
+                  type="text"
+                  name="specialization"
+                  id="specialization"
+                  required
+                  className="w-full border-b-2 border-gray-300 py-2 pl-10 pr-3 text-gray-900 transition-colors duration-300 focus:border-pink-500 focus:outline-none"
+                  placeholder="Specialization"
+                />
+              </div>
+              <div className="relative">
+                <Calendar className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                <input
+                  ref={availabilityRef}
+                  type="text"
+                  name="availability"
+                  id="availability"
+                  required
+                  className="w-full border-b-2 border-gray-300 py-2 pl-10 pr-3 text-gray-900 transition-colors duration-300 focus:border-pink-500 focus:outline-none"
+                  placeholder="Availability (e.g., Mon-Fri, 9AM-5PM)"
+                />
               </div>
               <div className="relative">
                 <Camera className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                 <input
-                  ref={imageUrlRef}
+                  ref={photoUrlRef}
                   type="url"
-                  name="imageUrl"
-                  id="imageUrl"
+                  name="photoUrl"
+                  id="photoUrl"
                   className="w-full border-b-2 border-gray-300 py-2 pl-10 pr-20 text-gray-900 transition-colors duration-300 focus:border-pink-500 focus:outline-none"
-                  placeholder="Image URL"
+                  placeholder="Photo URL"
                 />
                 <button
                   type="button"
@@ -148,7 +147,7 @@ const AddSalonService: React.FC = () => {
                 <div className="relative overflow-hidden rounded-lg">
                   <img
                     src={previewImage}
-                    alt="Service preview"
+                    alt="Staff preview"
                     className="h-48 w-full object-cover"
                   />
                   <button
@@ -190,7 +189,7 @@ const AddSalonService: React.FC = () => {
                   ) : (
                     <PlusCircle className="mr-2 h-5 w-5" />
                   )}
-                  {isSubmitting ? "Adding Service..." : "Add Service"}
+                  {isSubmitting ? "Adding Staff..." : "Add Staff Member"}
                 </button>
               </div>
             </form>
@@ -201,4 +200,4 @@ const AddSalonService: React.FC = () => {
   );
 };
 
-export default AddSalonService;
+export default AddSalonStaff;

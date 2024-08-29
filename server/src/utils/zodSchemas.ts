@@ -14,7 +14,7 @@ export const signinSchema = z.object({
 export const updateUserSchema = z.object({
   fullName: z.string().min(1),
   photoUrl: z.string().optional(),
-  role: z.string().optional()
+  role: z.string().optional(),
 });
 
 export const servicesSchema = z.object({
@@ -23,4 +23,12 @@ export const servicesSchema = z.object({
   duration: z.number(),
   price: z.number(),
   imageUrl: z.string(),
+});
+
+export const StaffMemberSchema = z.object({
+  fullName: z.string(),
+  email: z.string(),
+  photoUrl: z.string(),
+  specialization: z.string(),
+  availability: z.string(),
 });

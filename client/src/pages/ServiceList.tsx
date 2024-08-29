@@ -3,6 +3,8 @@ import { getUser } from "@/store/slices/userSlice";
 import { HEADERDATA, SERVER_URL } from "@/utils/constants";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { FaUser } from "react-icons/fa";
+import { FaWandMagicSparkles } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -55,6 +57,10 @@ const ServiceListPage = () => {
                 {service.name}
               </h2>
               <p className="mb-4 text-gray-600">{service.description}</p>
+              <div className="mb-2 flex items-center text-gray-600">
+                  <FaWandMagicSparkles className="mr-2" />
+                  Service ID:<span className="ml-1 ">{service.id}</span>
+                </div>
               <div className="mb-2 text-gray-800">
                 <span className="font-bold">Duration:</span> {service.duration}{" "}
                 mins
@@ -62,6 +68,7 @@ const ServiceListPage = () => {
               <div className="mb-4 text-xl font-bold text-purple-600">
                 ${service.price.toFixed(2)}
               </div>
+              
               <Link
                 to={`/services/${service.id}`}
                 className="mx-auto block rounded-lg bg-purple-600 px-4 py-2 text-center text-white transition hover:bg-purple-700"

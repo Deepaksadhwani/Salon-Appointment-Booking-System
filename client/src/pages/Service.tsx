@@ -57,9 +57,9 @@ const Service = () => {
             <p className="mb-8 text-3xl font-bold text-indigo-600">
               ${serviceData.price.toFixed(2)}
             </p>
-            <button className="w-full transform rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-4 font-bold text-white shadow-lg transition hover:scale-105 hover:shadow-2xl md:w-auto">
+            <Link to="/book-appointment" className="w-full transform cursor-pointer rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-4 font-bold text-white shadow-lg transition hover:scale-105 hover:shadow-2xl md:w-auto">
               Book Now
-            </button>
+            </Link>
           </div>
         </div>
 

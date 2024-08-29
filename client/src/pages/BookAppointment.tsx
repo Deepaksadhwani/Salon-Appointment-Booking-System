@@ -4,7 +4,8 @@ import toast from "react-hot-toast";
 import { HEADERDATA, SERVER_URL } from "@/utils/constants";
 import { FaCalendarAlt, FaUserAlt, FaCut, FaClock } from "react-icons/fa";
 
-const BookAppointment: React.FC = () => {
+const BookAppointment = () => {
+  const email = localStorage.getItem("email");
   const serviceIdRef = useRef<HTMLSelectElement>(null);
   const staffIdRef = useRef<HTMLSelectElement>(null);
   const dateTimeRef = useRef<HTMLInputElement>(null);
@@ -35,10 +36,11 @@ const BookAppointment: React.FC = () => {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_signature: response.razorpay_signature,
               formData,
+              email,
             },
             HEADERDATA,
           );
-          console.log(data)
+          console.log(data);
           toast.success("Your appointment has been scheduled successfully! 🎉");
         },
         prefill: {
@@ -75,7 +77,7 @@ const BookAppointment: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-pink-300 via-purple-300 to-indigo-400 px-4 py-12 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-md transform overflow-hidden rounded-2xl bg-white shadow-xl transition-all duration-300 hover:shadow-2xl">
         <div className="px-6 py-8">
           <h2 className="mb-6 text-center text-3xl font-extrabold text-gray-900">
@@ -90,7 +92,9 @@ const BookAppointment: React.FC = () => {
                 className="w-full appearance-none rounded-md border border-gray-300 px-3 py-2 pl-10 placeholder-gray-400 shadow-sm focus:border-pink-500 focus:outline-none focus:ring-pink-500"
                 defaultValue=""
               >
-                <option value="" disabled>Select a Service</option>
+                <option value="" disabled>
+                  Select a Service
+                </option>
                 <option value="1">Haircut & Styling</option>
                 <option value="2">Full Body Massage</option>
                 <option value="3">Manicure & Pedicure</option>
@@ -107,7 +111,9 @@ const BookAppointment: React.FC = () => {
                 className="w-full appearance-none rounded-md border border-gray-300 px-3 py-2 pl-10 placeholder-gray-400 shadow-sm focus:border-pink-500 focus:outline-none focus:ring-pink-500"
                 defaultValue=""
               >
-                <option value="" disabled>Select a Stylist</option>
+                <option value="" disabled>
+                  Select a Stylist
+                </option>
                 <option value="1">Nikita Jain</option>
                 <option value="2">Liam Chen</option>
                 <option value="3">Sophia Rodriguez</option>
@@ -128,10 +134,13 @@ const BookAppointment: React.FC = () => {
             <div>
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-all duration-300 ease-in-out"
+                className="group relative flex w-full justify-center rounded-md border border-transparent bg-gradient-to-r from-pink-500 to-purple-600 px-4 py-3 text-sm font-medium text-white transition-all duration-300 ease-in-out hover:from-pink-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
               >
-                <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                  <FaClock className="h-5 w-5 text-pink-300 group-hover:text-pink-400" aria-hidden="true" />
+                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                  <FaClock
+                    className="h-5 w-5 text-pink-300 group-hover:text-pink-400"
+                    aria-hidden="true"
+                  />
                 </span>
                 Book Now
               </button>

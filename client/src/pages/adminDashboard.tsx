@@ -21,6 +21,7 @@ const AdminDashboard = () => {
         setAppointments(data.data);
         setTotalService(data.totalServices);
         setTotalStaff(data.totalStaffs);
+        console.log(data)
       } catch (error) {
         console.error("Failed to fetch appointments", error);
       }

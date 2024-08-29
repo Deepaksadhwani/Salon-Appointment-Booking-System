@@ -6,6 +6,7 @@ import {
 import { Request, Response } from "express";
 import Razorpay from "razorpay";
 import dotenv from "dotenv";
+import { sendMail } from "../services/brevoService";
 dotenv.config();
 
 const key_id: any = process.env.RAZROPAY_API_KEY;
@@ -30,7 +31,6 @@ export const createAppointmentController = async (
     };
 
     const order = await razorpayInstance.orders.create(options);
-    console.log("createorder", order);
     res.status(201).json({
       orderId: order.id,
       amount: order.amount,
@@ -44,8 +44,8 @@ export const createAppointmentController = async (
 /*------------------------verify Appointment------------------- */
 
 export const verifyAppointmentController = async (req: any, res: any) => {
-  const { razorpay_order_id, razorpay_payment_id, formData } = req.body;
-
+  const { razorpay_order_id, razorpay_payment_id, formData, email } = req.body;
+  console.log("email", email);
   try {
     const data = {
       userId: req.userId,
@@ -57,7 +57,7 @@ export const verifyAppointmentController = async (req: any, res: any) => {
       orderId: razorpay_order_id,
     };
     const response = await insertAppointment(data);
-
+    sendMail([{ email }], new Date(formData.dateTime));
     res
       .status(201)
       .json({ message: "Appointment booked successfully", data: response });

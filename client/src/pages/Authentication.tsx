@@ -47,6 +47,7 @@ const Authentication = () => {
       );
       const token = response.headers["authorization"]?.split(" ")[1];
       localStorage.setItem("token", token);
+      localStorage.setItem("email", response.data.data.email)
       localStorage.setItem("userData", JSON.stringify(response.data.data));
       navigate("/");
       console.log(response);

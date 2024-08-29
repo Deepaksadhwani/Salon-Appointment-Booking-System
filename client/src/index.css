@@ -76,5 +76,5 @@
   }
 
   .dropdown {
-    @apply flex items-center  border-gray-500  justify-evenly py-1 transition-all hover:scale-[1.05] hover:text-black;
+    @apply flex items-center  border-gray-500  justify-between px-3 py-1 transition-all hover:scale-[1.05] hover:text-black;
   }

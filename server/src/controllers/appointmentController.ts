@@ -1,4 +1,8 @@
-import { insertAppointment } from "../services/appointmentService";
+import {
+  getAllAppointments,
+  getUserAppointments,
+  insertAppointment,
+} from "../services/appointmentService";
 import { Request, Response } from "express";
 import Razorpay from "razorpay";
 import dotenv from "dotenv";
@@ -40,12 +44,7 @@ export const createAppointmentController = async (
 /*------------------------verify Appointment------------------- */
 
 export const verifyAppointmentController = async (req: any, res: any) => {
-  const {
-    razorpay_order_id,
-    razorpay_payment_id,
-    razorpay_signature,
-    formData,
-  } = req.body;
+  const { razorpay_order_id, razorpay_payment_id, formData } = req.body;
 
   try {
     const data = {
@@ -54,15 +53,43 @@ export const verifyAppointmentController = async (req: any, res: any) => {
       staffId: parseInt(formData.staffId),
       dateTime: new Date(formData.dateTime),
       status: "SUCCESSFUL",
+      paymentId: razorpay_payment_id,
+      orderId: razorpay_order_id,
     };
-    console.log("responseData", data)
     const response = await insertAppointment(data);
-    console.log("datarespoes", response)
-   
+
     res
       .status(201)
       .json({ message: "Appointment booked successfully", data: response });
   } catch (error) {
     res.status(500).json({ error: "Failed to book appointment" });
+  }
+};
+
+/*-------------------------fetch all expense---------------------- */
+
+export const getAllAppointmentController = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const data = await getAllAppointments();
+    res
+      .status(200)
+      .json({ Message: "admin data has been successfully fetched.", data });
+  } catch (error) {
+    res.status(500).json({ Message: "Internal server error." });
+  }
+};
+
+export const getUserAppointmentController = async (req: any, res: Response) => {
+  const userId: any = req.userId;
+  try {
+    const data = await getUserAppointments(userId);
+    res
+      .status(200)
+      .json({ Message: "User appointment has been fetched.", data });
+  } catch (error) {
+    res.status(500).json({ Message: "Internal server error." });
   }
 };

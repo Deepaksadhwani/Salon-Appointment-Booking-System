@@ -15,6 +15,7 @@ import SalonStaff from "./pages/StaffMembers.tsx";
 import AdminDashboard from "./pages/adminDashboard.tsx";
 import AddSalonStaff from "./pages/AddSalonStaff.tsx";
 import BookAppointment from "./pages/BookAppointment.tsx";
+import UserAppointments from "./pages/UserAppointments.tsx";
 ;
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -31,6 +32,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/add-staff" element={<AddSalonStaff/>} />
           <Route path="/book-appointment" element={<BookAppointment/>} />
+          <Route path="/user-appointment" element={<UserAppointments/>} />
           
         </Route>
         <Route path="/authentication" element={<Authentication />} />

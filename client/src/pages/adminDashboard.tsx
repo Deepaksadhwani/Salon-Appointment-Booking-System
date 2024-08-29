@@ -1,62 +1,62 @@
-import { useNavigate } from 'react-router-dom';
+import { HEADERDATA, SERVER_URL } from "@/utils/constants";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const [appointments, setAppointments] = useState([]);
+  const [totalStaff, setTotalStaff] = useState<number>(0);
+  const [totalservice, setTotalService] = useState<number>(0);
 
+  useEffect(() => {
+    const getAllAppointments = async () => {
+      try {
+        const {
+          data: { data },
+        } = await axios.get(
+          `${SERVER_URL}/appointment/appointmentdata`,
+          HEADERDATA,
+        );
+        setAppointments(data.data);
+        setTotalService(data.totalServices);
+        setTotalStaff(data.totalStaffs);
+      } catch (error) {
+        console.error("Failed to fetch appointments", error);
+      }
+    };
+    getAllAppointments();
+  }, []);
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col">
+    <div className="flex min-h-screen flex-col bg-gray-100">
       {/* Header */}
-      <header className="bg-purple-600 text-white p-4 flex justify-between items-center">
+      <header className="flex items-center justify-between bg-purple-600 p-4 text-white">
         <h1 className="text-2xl font-bold">Salon Admin Dashboard</h1>
-       
       </header>
 
       {/* Main Content */}
       <div className="flex flex-1">
         {/* Sidebar */}
-        <aside className="w-64 bg-white shadow-md p-6">
+        <aside className="w-64 bg-white p-6 shadow-md">
           <nav>
             <ul>
               <li className="mb-4">
                 <button
-                  onClick={() => navigate('/add-services')}
-                  className="w-full text-left text-purple-600 font-semibold hover:text-purple-800"
+                  onClick={() => navigate("/add-services")}
+                  className="w-full text-left font-semibold text-purple-600 hover:text-purple-800"
                 >
                   Add Service
                 </button>
               </li>
               <li className="mb-4">
                 <button
-                  onClick={() => navigate('/add-staff')}
-                  className="w-full text-left text-purple-600 font-semibold hover:text-purple-800"
+                  onClick={() => navigate("/add-staff")}
+                  className="w-full text-left font-semibold text-purple-600 hover:text-purple-800"
                 >
                   Add Staff
                 </button>
               </li>
-              <li className="mb-4">
-                <button
-                  onClick={() => navigate('/appointment-history')}
-                  className="w-full text-left text-purple-600 font-semibold hover:text-purple-800"
-                >
-                  Appointment History
-                </button>
-              </li>
-              <li className="mb-4">
-                <button
-                  onClick={() => navigate('/transaction-history')}
-                  className="w-full text-left text-purple-600 font-semibold hover:text-purple-800"
-                >
-                  Transaction History
-                </button>
-              </li>
-              <li className="mb-4">
-                <button
-                  onClick={() => navigate('/dashboard-reports')}
-                  className="w-full text-left text-purple-600 font-semibold hover:text-purple-800"
-                >
-                  Reports
-                </button>
-              </li>
+             
             </ul>
           </nav>
         </aside>
@@ -64,59 +64,72 @@ const AdminDashboard = () => {
         {/* Main Content Area */}
         <main className="flex-1 p-6">
           {/* Overview Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            <div className="bg-white p-4 rounded-lg shadow-lg text-center">
-              <h2 className="text-lg font-bold text-gray-700">Total Services</h2>
-              <p className="text-2xl text-purple-600">10</p>
+          <div className="mb-6 grid grid-cols-1 gap-6 md:grid-cols-1 lg:grid-cols-3">
+            <div className="rounded-lg bg-white p-4 text-center shadow-lg">
+              <h2 className="text-lg font-bold text-gray-700">
+                Total Services
+              </h2>
+              <p className="text-2xl text-purple-600">{totalservice}</p>
             </div>
-            <div className="bg-white p-4 rounded-lg shadow-lg text-center">
+            <div className="rounded-lg bg-white p-4 text-center shadow-lg">
               <h2 className="text-lg font-bold text-gray-700">Total Staff</h2>
-              <p className="text-2xl text-purple-600">5</p>
+              <p className="text-2xl text-purple-600">{totalStaff}</p>
             </div>
-            <div className="bg-white p-4 rounded-lg shadow-lg text-center">
-              <h2 className="text-lg font-bold text-gray-700">Upcoming Appointments</h2>
-              <p className="text-2xl text-purple-600">8</p>
-            </div>
-            <div className="bg-white p-4 rounded-lg shadow-lg text-center">
-              <h2 className="text-lg font-bold text-gray-700">Completed Appointments</h2>
-              <p className="text-2xl text-purple-600">25</p>
+           
+            <div className="rounded-lg bg-white p-4 text-center shadow-lg">
+              <h2 className="text-lg font-bold text-gray-700">
+                total Appointments
+              </h2>
+              <p className="text-2xl text-purple-600">{appointments.length}</p>
             </div>
           </div>
 
           {/* Total Transactions */}
-          <div className="bg-white p-4 rounded-lg shadow-lg text-center mb-6">
-            <h2 className="text-lg font-bold text-gray-700">Total Transactions</h2>
-            <p className="text-2xl text-purple-600">$12,345.67</p>
-            <button
-              onClick={() => navigate('/transaction-history')}
-              className="mt-4 bg-purple-600 text-white py-2 px-4 rounded hover:bg-purple-700"
-            >
-              View Transaction History
-            </button>
+          <div className="mb-6 rounded-lg bg-white p-4 text-center shadow-lg">
+            <h2 className="text-lg font-bold text-gray-700">
+              Total Transactions
+            </h2>
+            <p className="text-2xl text-purple-600">${appointments.length * 500}</p>
+          
           </div>
 
           {/* Recent Appointments */}
           <section>
-            <h2 className="text-xl font-bold text-gray-700 mb-4">Recent Appointments</h2>
-            <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="mb-4 text-xl font-bold text-gray-700">
+              Recent Appointments
+            </h2>
+            <div className="rounded-lg bg-white p-6 shadow-lg">
               <table className="w-full table-auto">
                 <thead>
-                  <tr className="bg-gray-100 text-gray-600 text-left">
-                    <th className="py-2 px-4">Customer</th>
-                    <th className="py-2 px-4">Service</th>
-                    <th className="py-2 px-4">Staff</th>
-                    <th className="py-2 px-4">Date</th>
-                    <th className="py-2 px-4">Status</th>
+                  <tr className="bg-gray-100 text-left text-gray-600">
+                    <th className="px-4 py-2">Customer</th>
+                    <th className="px-4 py-2">Service</th>
+                    <th className="px-4 py-2">Staff</th>
+                    <th className="px-4 py-2">Date</th>
+                    <th className="px-4 py-2">Status</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td className="py-2 px-4">John Doe</td>
-                    <td className="py-2 px-4">Haircut</td>
-                    <td className="py-2 px-4">Jane Smith</td>
-                    <td className="py-2 px-4">Aug 30, 2024</td>
-                    <td className="py-2 px-4 text-green-500 font-semibold">Confirmed</td>
-                  </tr>
+                  {appointments &&
+                    appointments.map((appointment: any) => (
+                      <tr key={appointment.id}>
+                        <td className="px-4 py-2">
+                          {appointment.user.fullName}
+                        </td>
+                        <td className="px-4 py-2">
+                          {appointment.service.name}
+                        </td>
+                        <td className="px-4 py-2">
+                          {appointment.staff.fullName}
+                        </td>
+                        <td className="px-4 py-2">
+                          {new Date(appointment.dateTime).toLocaleDateString()}
+                        </td>
+                        <td className="px-4 py-2 font-semibold text-green-500">
+                          {appointment.status}
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>

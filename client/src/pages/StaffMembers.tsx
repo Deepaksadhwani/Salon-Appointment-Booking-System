@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { HEADERDATA, SERVER_URL } from "@/utils/constants";
-import { FaEnvelope, FaClock,FaUser } from "react-icons/fa";
+import { FaEnvelope, FaClock, FaUser } from "react-icons/fa";
+import { Link, Navigate } from "react-router-dom";
 
 interface StaffMember {
   id: number;
@@ -55,25 +56,22 @@ const SalonStaff = () => {
                 </p>
                 <div className="my-4 flex items-center text-gray-600">
                   <FaUser className="mr-2" />
-                  Staff ID:<span className="ml-1 ">{staff.id}</span>
+                  Staff ID:<span className="ml-1">{staff.id}</span>
                 </div>
                 <div className="my-4 flex items-center text-gray-600">
                   <FaEnvelope className="mr-2" />
                   <span>{staff.email}</span>
                 </div>
-                
+
                 <div className="mb-6 flex items-center text-gray-600">
                   <FaClock className="mr-2" />
                   <span>{staff.availability}</span>
                 </div>
-                <button
-                  className="w-full rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-center text-lg font-semibold text-white transition-all duration-300 hover:from-purple-700 hover:to-pink-700 hover:shadow-lg"
-                  onClick={() => {
-                    /* Add functionality to book or contact staff */
-                  }}
-                >
-                  Book Appointment
-                </button>
+                <Link to="/book-appointment">
+                  <button className="w-full rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 text-center text-lg font-semibold text-white transition-all duration-300 hover:from-purple-700 hover:to-pink-700 hover:shadow-lg">
+                    Book Appointment
+                  </button>
+                </Link>
               </div>
             </div>
           ))}

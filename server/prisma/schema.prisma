@@ -20,7 +20,7 @@ model User {
   password    String
   photoUrl    String?
   role        String?
-  Appointment Appointment[]
+  Appointment Appointment[] @relation("user-appointment-user")
 }
 
 model Services {
@@ -50,9 +50,9 @@ model Staff {
 }
 
 model Appointment {
-  id        Int      @id @default(autoincrement())
+  id        Int      @id @default(autoincrement()) 
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], "user-appointment-user")
   serviceId Int
   service   Services @relation(fields: [serviceId], references: [id])
   staffId   Int

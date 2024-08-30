@@ -1,9 +1,9 @@
+import StaffServiceLoader from "@/components/StaffServiceLoader";
 import { AppDispatch } from "@/store/appStore";
 import { getUser } from "@/store/slices/userSlice";
 import { HEADERDATA, SERVER_URL } from "@/utils/constants";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { FaUser } from "react-icons/fa";
 import { FaWandMagicSparkles } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
@@ -18,6 +18,8 @@ export type ServicesListTypes = {
 }
 const ServiceListPage = () => {
   const [serviceList, setServiceList] = useState<ServicesListTypes[]>();
+  const [loading, setLoading] = useState(true);
+
   const dispatch = useDispatch<AppDispatch>()
   useEffect(() => {
     dispatch(getUser());
@@ -32,9 +34,13 @@ const ServiceListPage = () => {
       
     };
     fetchServices();
+    const timer = setTimeout(() => {
+      setLoading(false)
+    }, 500);
+    return () => clearTimeout(timer)
   }, []);
 
-  return (
+  return loading ? <StaffServiceLoader/> : (
     <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 px-4 py-12 sm:px-6 lg:px-8">
       <h1 className="mb-8 text-center text-4xl font-bold text-gray-800">
         Our Services

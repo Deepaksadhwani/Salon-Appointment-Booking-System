@@ -3,10 +3,12 @@ import profileImage from "@/assets/profileImage.jpeg";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/appStore";
 import { updateUserProfile } from "@/store/slices/userSlice";
+import UserProfileLoader from "@/components/UserProfileLoader";
 
 const UserProfile = () => {
+  const [loading, setLoading] = useState(true);
   const [displayName, setDisplayName] = useState<string>("");
-  const adminKey = useRef<HTMLInputElement>(null)
+  const adminKey = useRef<HTMLInputElement>(null);
   const photoUrl = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch<AppDispatch>();
   const [error, setError] = useState<string>("");
@@ -22,17 +24,22 @@ const UserProfile = () => {
 
   const handleSaveProfile = async () => {
     setError("");
+    setLoading(true);
     const data: any = {
       fullName: displayName,
       role: adminKey.current?.value,
       photoUrl: photoUrl.current?.value,
     };
-    console.log(data)
+    console.log(data);
     try {
       dispatch(updateUserProfile(data));
       localStorage.setItem("userData", JSON.stringify({ name: displayName }));
     } catch (error) {
       console.log(error);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
     }
   };
 
@@ -46,8 +53,14 @@ const UserProfile = () => {
         setDisplayName(userDataParsed.name);
       }
     }
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
   }, []);
-  return (
+  return loading ? (
+    <UserProfileLoader />
+  ) : (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-purple-400 via-pink-500 to-red-500 p-4">
       <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-xl">
         <div className="flex flex-col items-center">
@@ -63,7 +76,7 @@ const UserProfile = () => {
 
           {/* Username Section */}
           <div className="mt-6 w-full">
-          <label
+            <label
               htmlFor="username"
               className="mb-2 block font-semibold text-gray-700"
             >
@@ -73,13 +86,13 @@ const UserProfile = () => {
               onChange={displayNameHandler}
               type="text"
               value={displayName}
-              className="w-full rounded-lg mb-2 border px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
+              className="mb-2 w-full rounded-lg border px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
-          <label
+            <label
               htmlFor="password"
               className="mb-2 block font-semibold text-gray-700"
             >
-           administer Key
+              administer Key
             </label>
             <input
               ref={adminKey}
@@ -99,7 +112,6 @@ const UserProfile = () => {
               placeholder="Enter your photo url"
               className="w-full rounded-lg border px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
-        
           </div>
 
           {/* Save Button */}

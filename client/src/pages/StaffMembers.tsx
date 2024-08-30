@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import axios from "axios";
 import { HEADERDATA, SERVER_URL } from "@/utils/constants";
 import { FaEnvelope, FaClock, FaUser } from "react-icons/fa";
-import { Link, Navigate } from "react-router-dom";
+import { Link,  } from "react-router-dom";
+import StaffServiceLoader from "@/components/StaffServiceLoader";
 
 interface StaffMember {
   id: number;
@@ -15,6 +16,7 @@ interface StaffMember {
 
 const SalonStaff = () => {
   const [staffList, setStaffList] = useState<StaffMember[]>();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchStaffMembers = async () => {
@@ -25,9 +27,13 @@ const SalonStaff = () => {
       setStaffList(data);
     };
     fetchStaffMembers();
+    const timer = setTimeout(() => {
+      setLoading(false)
+    }, 500);
+    return () => clearTimeout(timer)
   }, []);
 
-  return (
+  return loading ? <StaffServiceLoader/> : (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-700 to-red-600 px-4 py-16 sm:px-6 lg:px-8">
       <h1 className="mb-12 text-center text-5xl font-extrabold text-white drop-shadow-lg">
         Meet Our Talented Staff

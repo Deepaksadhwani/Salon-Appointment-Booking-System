@@ -10,13 +10,13 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/appStore";
 import { useNavigate } from "react-router-dom";
 import { addToken } from "@/store/slices/userSlice";
-import Shimmer from "@/components/Shimmer";
+import Loader from "@/components/Loader";
 
 const Authentication = () => {
   type FormInputTypes = z.infer<typeof authValidationSchema>;
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const name = useRef<HTMLInputElement>(null);
   const email = useRef<HTMLInputElement>(null);
   const password = useRef<HTMLInputElement>(null);
@@ -74,10 +74,14 @@ const Authentication = () => {
       dispatch(addToken(userToken));
       navigate("/");
     }
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 500);
+    return  () => clearTimeout(timer)
   }, []);
 
   return isLoading ? (
-    <Shimmer />
+    <Loader />
   ) : (
     <section className="bg-gradient-to-bl from-gray-400 via-white to-gray-400">
       <div className="fixed right-60 hidden w-60 drop-shadow-lg xl:block">
